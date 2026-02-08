@@ -1,4 +1,4 @@
-@startuml source
+@startuml c1_containers
 
 ''' init layout
 
@@ -23,13 +23,13 @@ arrow {
 ''' end init layout
 
 title
-    <b>Система управления отоплением</b>
+    <b>Система управления умным домом</b>
     <i> Схема TO-BE </i>
     <i> C1 - Containers </i>
 end title
 
 Person(admin, "Administrator", "Manage system")
-Person_Ext(user, "User", "User, who get sensor's data")
+Person_Ext(user, "User", "User, smart house' owner")
 
 System_Boundary(sourceSystem, "Main system") {
     Container(spa, "WebApplication", "React", "User interactions")
@@ -51,13 +51,15 @@ System_Boundary(sourceSystem, "Main system") {
     SystemDb(data_bus, "Data bus", "Data to / from sensors")
 }
 
-System_Boundary(client, "Local temperature sensor") {
-    System_Ext(sensor, "Temperature sensor"){
-        Component_Ext(sensorApi, "Sensor API", "ASP.NET", "Manage concrete sensor")
-        Component_Ext(sensorEmbedded, "Current sensor", "C/C++", "Low-Level operating sensor")
+System_Boundary(client, "Smart House") {
+    Component_Ext(houseApi, "Sensor BFF", "ASP.NET", "Manage concrete sensor")
+    Component_Ext(sensorEmbedded, "Current sensor", "C/C++", "Low-Level operating sensor")
+    Component_Ext(houseSpaAdmin, "Local admin panel", "React")
+    SystemDb_Ext(houseState, "House state", "Settings, values etc.")
 
-        Rel_D(sensorApi, sensorEmbedded, "Manage sensor", "InteropServices")
-    }   
+    Rel_D(houseApi, sensorEmbedded, "Manage sensor", "InteropServices")
+    Rel_D(houseSpaAdmin, houseApi, "Local manage smart house", "InteropServices")
+    Rel(houseApi, houseState, "Read/Write setting/state")
 }
 
 Rel(user, spa, "Interact with web app")
@@ -70,12 +72,12 @@ Rel(bff_Api, data_bus, "")
 
 Rel(admin, spaAdmin, "manage sensors and settings")
 Rel_L(spaAdmin, iam, "check or/and manage accounts")
-Rel_D(spaAdmin, settings_handler, "manage sensors")
+Rel_D(spaAdmin, settings_handler, "manage smart house")
 
 Rel_D(settings_handler, data_bus, "")
 
 Rel(get_handler, data_bus, "")
-Rel(get_handler, sensorApi, "")
+Rel(get_handler, houseApi, "")
 Rel(cache, log_db, "")
 Rel_D(get_handler, cache, "")
 
