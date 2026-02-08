@@ -1,0 +1,33 @@
+@startuml c1_containers
+
+
+''' init layout
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+skinparam linetype ortho
+skinparam nodesep 150
+skinparam ranksep 100
+skinparam sequenceMessageAlign center
+
+<style>
+arrow {
+    FontName Arial
+    FontSize 12
+    FontStyle italic
+    FontColor black
+}
+</style>
+
+''' end init layout
+
+System_Boundary(sourceSystem, "Main system") {}
+
+System_Boundary(client, "Smart House") {
+    Container(house, "Smart House instance", "asp.net + react", "1 instance -> many sensors")
+}
+
+
+@enduml
