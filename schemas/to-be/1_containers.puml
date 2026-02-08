@@ -23,11 +23,24 @@ arrow {
 
 ''' end init layout
 
-System_Boundary(sourceSystem, "Main system") {}
+System_Boundary(sourceSystem, "Main system") {
+    Container(iam, "IAM ", "", "")
+    Container(main, "Main Web App", "", "")
+    Container(handlers, "Handlers", "", "")
+    Container(log_db, "Log Storage", "")
+
+    iam "1"--"1..*" main
+    main "1..*"--"1..*" handlers
+    main "1..*"--"1" log_db
+}
 
 System_Boundary(client, "Smart House") {
-    Container(house, "Smart House instance", "asp.net + react", "1 instance -> many sensors")
+    Container(house, "Smart House instance", "", "")
+    Container(sensorEmbedded, "sensor", "", "")
+    house "1"--"0..*" sensorEmbedded
 }
+
+handlers "1..*"--"1..*" house
 
 
 @enduml

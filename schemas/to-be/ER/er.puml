@@ -5,52 +5,51 @@
 Entity(User, "Пользователи") {
   * **id** : UUID [PK]
   --
-  login : VARCHAR(50)
-  email : VARCHAR(100)
+  * login : VARCHAR(50)
+  * email : VARCHAR(100)
 }
 
 Entity(Administrator, "Администраторы") {
   * **id** : UUID [PK]
   --
-  login : VARCHAR(50)
-  email : VARCHAR(100)
+  * login : VARCHAR(50)
+  * email : VARCHAR(100)
 }
 
 Entity(House, "Умный дом (система)") {
   * **id** : UUID [PK]
   --
   name : VARCHAR(150)
-  connection : VARCHAR(200)
-  houseState : enum
+  * connection : VARCHAR(200)
 }
 
 Entity(Sensor, "Сенсоры") {
   * **id** : UUID [PK]
   --
-  sensorType : enum
-  houseId : UUID
+  * sensorType : enum
+  * houseId : UUID
 }
 
 Entity(SensorState, "Состояние сенсора") {
   * **id** : UUID [PK]
   --
-  stateDate : TIMESTAMPTZ
-  sensorValue : real
+  * stateDate : TIMESTAMPTZ
+  * sensorValue : real
 }
 
 Entity(HouseState, "Состояние умного дома") {
   * **id** : UUID [PK]
   --
-  stateDate : TIMESTAMPTZ
-  houseState : json
+  * stateDate : TIMESTAMPTZ
+  * houseState : json
 }
 
 Entity(HouseCommand, "Команда умному дому") {
   * **id** : UUID [PK]
   --
-  houseId : UUID
-  commandType : enum
-  commandValue : real
+  * houseId : UUID
+  * commandType : enum
+  * commandValue : real
 }
 
 

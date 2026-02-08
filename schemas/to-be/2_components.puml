@@ -25,7 +25,7 @@ arrow {
 title
     <b>Система управления умным домом</b>
     <i> Схема TO-BE </i>
-    <i> C1 - Containers </i>
+    <i> C2 - Components </i>
 end title
 
 Person(admin, "Administrator", "Manage system")
