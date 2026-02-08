@@ -1,0 +1,40 @@
+@startuml c3_code_get_handler
+
+<style>
+arrow {
+    FontName Arial
+    FontSize 12
+    FontStyle italic
+    FontColor black
+}
+</style>
+
+skinparam linetype ortho
+skinparam nodesep 150
+skinparam ranksep 100
+skinparam sequenceMessageAlign center
+
+title
+    <b>Система управления отоплением</b>
+    <i> Хэндлер сенсоров </i>
+    <i> C4 - Class diagram </i>
+end title
+
+namespace getHandlers {
+    class SensorHandler {
+        - busConnectionString: string
+        - smartHouseConnections: string[]
+        + ctor()
+        + SaveEventToLog(): boolean
+        + StoreSensorDataToBus(): boolean
+    }
+    class SensorsController {
+        + ctor()
+        {method} @PostEvent("/new")
+        + newEvent(dto: NewEventDto)
+    }
+
+    SensorsController -> SensorHandler : 1. call handler
+}
+
+@enduml
