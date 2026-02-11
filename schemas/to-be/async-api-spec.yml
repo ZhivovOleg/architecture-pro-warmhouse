@@ -1,0 +1,39 @@
+asyncapi: 2.6.0
+
+info:
+  title: Events from sensors and commands to s_houses (rabbitMQ)
+  version: 1.0.0
+
+servers:
+  host: localhost:5672
+  protocol: amqp
+  description: main MB
+
+channels:
+  fromSensors:
+    address: events.v1.fromSensors
+    message:
+      newEvent:
+        $ref: '#/components/messages/NewEvent'
+    binding:
+      ampq:
+        is: routingKey
+
+operations:
+  sendNewEvent:
+    action: send
+    channel:
+      $ref: '#/channels/newEventChannel'
+    summary: Public new event
+
+components:
+  messages:
+    NewEvent:
+      payload:
+        type: object
+        properties:
+          eventTimestamp: { type: Timestampz }
+          eventType: { type: string }
+          eventValue: { type: string }
+
+
