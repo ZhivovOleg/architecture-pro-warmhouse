@@ -38,7 +38,7 @@ System_Boundary(sourceSystem, "Main system") {
 
     Container(bff_Api, "public API", "golang", "Back-For-Front")
 
-    Container(get_handler, "Get Handler", "golang", "Get data from sensors and store it in cache")
+    Container(get_handler, "Get Handler", "golang", "Get data from sensors and store it in bus")
 
     Container(settings_handler, "Settings Handler", "golang", "Manage sensors' settings")
 
@@ -52,7 +52,7 @@ System_Boundary(sourceSystem, "Main system") {
 }
 
 System_Boundary(client, "Smart House") {
-    Component_Ext(houseApi, "Sensor BFF", "ASP.NET", "Manage concrete sensor")
+    Component_Ext(houseApi, "SmartHome BFF", "ASP.NET", "Manage all home")
     Component_Ext(sensorEmbedded, "Current sensor", "C/C++", "Low-Level operating sensor")
     Component_Ext(houseSpaAdmin, "Local admin panel", "React")
     SystemDb_Ext(houseState, "House state", "Settings, values etc.")
