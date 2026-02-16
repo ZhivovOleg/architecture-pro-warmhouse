@@ -1,0 +1,84 @@
+@startuml c2_components
+
+''' init layout
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+skinparam linetype ortho
+skinparam nodesep 150
+skinparam ranksep 100
+skinparam sequenceMessageAlign center
+
+<style>
+arrow {
+    FontName Arial
+    FontSize 12
+    FontStyle italic
+    FontColor black
+}
+</style>
+
+''' end init layout
+
+title
+    <b>Система управления умным домом</b>
+    <i> Схема TO-BE </i>
+    <i> C2 - Components </i>
+end title
+
+Person(admin, "Administrator", "Manage system")
+Person_Ext(user, "User", "User, smart house' owner")
+
+System_Boundary(sourceSystem, "Main system") {
+    Container(spa, "WebApplication", "React", "User interactions")
+    Container(spaAdmin, "Admin panel", "React")
+    Container(iam, "IAM ", "keycloak", "Identity and access")
+
+    Container(bff_Api, "public API", "golang", "Back-For-Front")
+
+    Container(get_handler, "Get Handler", "golang", "Get data from sensors and store it in bus")
+
+    Container(settings_handler, "Settings Handler", "golang", "Manage sensors' settings")
+
+    SystemDb(cache, "Sensors Cache", "Store Data from sensors")
+
+    SystemDb(main_db, "System Storage", "Store settings for all sensors")
+
+    SystemDb(log_db, "Log Storage", "Store all events for all sensors")
+
+    SystemDb(data_bus, "Data bus", "Data to / from sensors")
+}
+
+System_Boundary(client, "Smart House") {
+    Component_Ext(houseApi, "SmartHome BFF", "ASP.NET", "Manage all home")
+    Component_Ext(sensorEmbedded, "Current sensor", "C/C++", "Low-Level operating sensor")
+    Component_Ext(houseSpaAdmin, "Local admin panel", "React")
+    SystemDb_Ext(houseState, "House state", "Settings, values etc.")
+
+    Rel_D(houseApi, sensorEmbedded, "Manage sensor", "InteropServices")
+    Rel_D(houseSpaAdmin, houseApi, "Local manage smart house", "InteropServices")
+    Rel(houseApi, houseState, "Read/Write setting/state")
+}
+
+Rel(user, spa, "Interact with web app")
+Rel_R(spa, iam, "check")
+Rel(spa, bff_Api, "")
+
+Rel(bff_Api, cache, "")
+Rel(bff_Api, main_db, "")
+Rel(bff_Api, data_bus, "")
+
+Rel(admin, spaAdmin, "manage sensors and settings")
+Rel_L(spaAdmin, iam, "check or/and manage accounts")
+Rel_D(spaAdmin, settings_handler, "manage smart house")
+
+Rel_D(settings_handler, data_bus, "")
+
+Rel(get_handler, data_bus, "")
+Rel(get_handler, houseApi, "")
+Rel(cache, log_db, "")
+Rel_D(get_handler, cache, "")
+
+@enduml

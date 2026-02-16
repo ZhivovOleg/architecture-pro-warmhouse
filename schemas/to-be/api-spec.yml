@@ -1,0 +1,74 @@
+openapi: 3.0.3
+
+info:
+  title: Work with s_houses
+  description: Получение обновлений от экземпляров умных домов
+  version: 1.0.0
+
+servers:
+  - url: https://central.warmhouse.com/api/v1
+    description: Production
+
+paths:
+  /events:
+    post:
+      summary: Новое событие
+      operationId: newEvent
+      tags:
+        - Events
+      requestBody:
+        description: Данные нового сообщения от датчика
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewEvent"
+      responses:
+        "201":
+          description: Событие успешно доставлено
+        "400":
+          description: Ошибка валидации
+  /register:
+    post:
+      summary: Регистрация нового контроллера умного дома
+      operationId: newSmartHouse
+      tags:
+        - House
+      requestBody:
+        description: Данные нового сообщения от датчика
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewHouse"
+      responses:
+        "201":
+          description: Устройство зарегистрировано
+        "400":
+          description: Ошибка валидации
+
+components:
+  schemas:
+    NewEvent:
+      type: object
+      required: [sensorId, houseId, eventType, eventValue]
+      properties:
+        sensorId:
+          type: string
+          format: uuid
+        houseId:
+          type: string
+          format: uuid
+        eventType:
+          type: integer
+        eventValue:
+          type: string
+    NewHouse:
+      type: object
+      required: [houseId, userLogin]
+      properties:
+        houseId:
+          type: string
+          format: uuid
+        userLogin:
+          type: string

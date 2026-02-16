@@ -1,0 +1,67 @@
+@startuml ER_diagram
+
+!define Entity(name,desc) class name as "desc" << (E,#FFAAAA) >>
+
+Entity(User, "Пользователи") {
+  * **id** : UUID [PK]
+  --
+  * login : VARCHAR(50)
+  * email : VARCHAR(100)
+}
+
+Entity(Administrator, "Администраторы") {
+  * **id** : UUID [PK]
+  --
+  * login : VARCHAR(50)
+  * email : VARCHAR(100)
+}
+
+Entity(House, "Умный дом (система)") {
+  * **id** : UUID [PK]
+  --
+  name : VARCHAR(150)
+  * connection : VARCHAR(200)
+}
+
+Entity(Sensor, "Сенсоры") {
+  * **id** : UUID [PK]
+  --
+  * sensorType : enum
+  * houseId : UUID
+}
+
+Entity(SensorState, "Состояние сенсора") {
+  * **id** : UUID [PK]
+  --
+  * stateDate : TIMESTAMPTZ
+  * sensorValue : real
+}
+
+Entity(HouseState, "Состояние умного дома") {
+  * **id** : UUID [PK]
+  --
+  * stateDate : TIMESTAMPTZ
+  * houseState : json
+}
+
+Entity(HouseCommand, "Команда умному дому") {
+  * **id** : UUID [PK]
+  --
+  * houseId : UUID
+  * commandType : enum
+  * commandValue : real
+}
+
+
+User "1"--"0..*" House
+
+House "1"--"0..*" Sensor
+
+House "1"--"0..*" HouseCommand
+
+House "1"--"1..*" HouseState
+
+Sensor "1"--"1..*" SensorState
+
+
+@enduml

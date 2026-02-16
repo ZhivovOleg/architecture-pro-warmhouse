@@ -1,0 +1,46 @@
+@startuml c1_containers
+
+
+''' init layout
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+skinparam linetype ortho
+skinparam nodesep 150
+skinparam ranksep 100
+skinparam sequenceMessageAlign center
+
+<style>
+arrow {
+    FontName Arial
+    FontSize 12
+    FontStyle italic
+    FontColor black
+}
+</style>
+
+''' end init layout
+
+System_Boundary(sourceSystem, "Main system") {
+    Container(iam, "IAM ", "", "")
+    Container(main, "Main Web App", "", "")
+    Container(handlers, "Handlers", "", "")
+    Container(log_db, "Log Storage", "")
+
+    iam "1"--"1..*" main
+    main "1..*"--"1..*" handlers
+    main "1..*"--"1" log_db
+}
+
+System_Boundary(client, "Smart House") {
+    Container(house, "Smart House instance", "", "")
+    Container(sensorEmbedded, "sensor", "", "")
+    house "1"--"0..*" sensorEmbedded
+}
+
+handlers "1..*"--"1..*" house
+
+
+@enduml
