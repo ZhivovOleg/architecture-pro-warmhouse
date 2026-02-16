@@ -12,6 +12,6 @@ WORKDIR /app
 
 COPY --from=build /app .
 
-ENV ASPNETCORE_HTTP_PORTS=8081
+ENV ASPNETCORE_HTTP_PORTS=8085
 
-ENTRYPOINT [ "dotnet", "temperature-api.dll" ]
+ENTRYPOINT [ "dotnet", "GetHandler.dll" ]
