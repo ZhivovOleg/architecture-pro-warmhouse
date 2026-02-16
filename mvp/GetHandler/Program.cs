@@ -18,6 +18,9 @@ builder.Services.AddSingleton(sp =>
     };
 });
 
+builder.Services.AddSingleton<IEventHandler, GetHandler.EventHandler>();
+builder.Services.AddHostedService<EventsWorker>();
+
 var app = builder.Build();
 
 app.UseSwagger();
